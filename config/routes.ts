@@ -1,4 +1,4 @@
-﻿export default [
+export default [
   {
     path: '/user',
     layout: false,
@@ -18,6 +18,12 @@
     name: 'welcome',
     icon: 'smile',
     component: './Welcome',
+  },
+  {
+    path: '/deposit',
+    name: 'deposit',
+    icon: 'smile',
+    component: './deposit',
   },
   {
     path: '/admin',
@@ -46,6 +52,30 @@
   {
     path: '/',
     redirect: '/welcome',
+  },
+  {
+    name: '个人中心',
+    icon: 'smile',
+    path: '/my',
+    component: './My',
+  },
+  {
+    name: '分析页',
+    icon: 'smile',
+    path: '/dashboardanalysis',
+    component: './DashboardAnalysis',
+  },
+  {
+    name: '工作台',
+    icon: 'smile',
+    path: '/workplace',
+    component: './Workplace',
+  },
+  {
+    name: '高级表单',
+    icon: 'smile',
+    path: '/formadvancedform',
+    component: './FormAdvancedForm',
   },
   {
     component: './404',

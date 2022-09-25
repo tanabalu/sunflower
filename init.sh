@@ -1,0 +1,1 @@
+git add . && git clean -dfx && npm i && npm start
