@@ -60,7 +60,7 @@ export default [
     component: './My',
   },
   {
-    name: '分析页',
+    name: 'dashboard',
     icon: 'smile',
     path: '/dashboardanalysis',
     component: './DashboardAnalysis',

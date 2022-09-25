@@ -1,6 +1,6 @@
-import type { FC } from 'react';
 import { useRequest } from 'umi';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useEffect } from 'react';
+import type { FC } from 'react';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { Col, Dropdown, Menu, Row } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
@@ -8,11 +8,12 @@ import type { RadioChangeEvent } from 'antd/es/radio';
 import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
 import type moment from 'moment';
 import IntroduceRow from './components/IntroduceRow';
-import SalesCard from './components/SalesCard';
+import DepositCard from './components/DepositCard';
+// import SalesCard from './components/SalesCard';
 import TopSearch from './components/TopSearch';
 import ProportionSales from './components/ProportionSales';
 import OfflineData from './components/OfflineData';
-import { fakeChartData } from './service';
+import { fakeChartData, fetchDepositData } from './service';
 import PageLoading from './components/PageLoading';
 import type { TimeType } from './components/SalesCard';
 import { getTimeDistance } from './utils/utils';
@@ -34,8 +35,21 @@ const DashboardAnalysis: FC<DashboardAnalysisProps> = () => {
   const [rangePickerValue, setRangePickerValue] = useState<RangePickerValue>(
     getTimeDistance('year'),
   );
+  const [depositData, setDepositData] = useState();
 
   const { loading, data } = useRequest(fakeChartData);
+  const { run: depositRun } = useRequest(fetchDepositData, {
+    manual: true,
+    onSuccess: (result, params) => {
+      console.log(result, params);
+      setDepositData(result);
+    },
+  });
+
+  useEffect(() => {
+    depositRun();
+    // setDepositData(deposit.data);
+  }, [rangePickerValue, depositRun]);
 
   const selectDate = (type: TimeType) => {
     setRangePickerValue(getTimeDistance(type));
@@ -104,7 +118,18 @@ const DashboardAnalysis: FC<DashboardAnalysisProps> = () => {
           <IntroduceRow loading={loading} visitData={data?.visitData || []} />
         </Suspense>
 
-        <Suspense fallback={null}>
+        <Suspense fallback={<PageLoading />}>
+          <DepositCard
+            rangePickerValue={rangePickerValue}
+            salesData={depositData || []}
+            isActive={isActive}
+            handleRangePickerChange={handleRangePickerChange}
+            loading={loading}
+            selectDate={selectDate}
+          />
+        </Suspense>
+
+        {/* <Suspense fallback={null}>
           <SalesCard
             rangePickerValue={rangePickerValue}
             salesData={data?.salesData || []}
@@ -113,7 +138,7 @@ const DashboardAnalysis: FC<DashboardAnalysisProps> = () => {
             loading={loading}
             selectDate={selectDate}
           />
-        </Suspense>
+        </Suspense> */}
 
         <Row
           gutter={24}

@@ -2,17 +2,40 @@ import React from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import { Card, Alert, Typography } from 'antd';
 import { useIntl, FormattedMessage } from 'umi';
-import { Chart, Line } from 'bizcharts';
+// import { Chart, Line } from 'bizcharts';
+import { Line } from '@ant-design/charts';
 import styles from './Welcome.less';
 
+// const data = [
+//   { x: '1991', y: 123, type: 'A' },
+//   { x: '1991', y: 123, type: 'B' },
+//   { x: '1992', y: 123, type: 'A' },
+//   { x: '1992', y: 123, type: 'B' },
+//   { x: '1993', y: 123, type: 'A' },
+//   { x: '1993', y: 123, type: 'B' },
+// ];
+
 const data = [
-  { x: '1991', y: 123, type: 'A' },
-  { x: '1991', y: 123, type: 'B' },
-  { x: '1992', y: 123, type: 'A' },
-  { x: '1992', y: 123, type: 'B' },
-  { x: '1993', y: 123, type: 'A' },
-  { x: '1993', y: 123, type: 'B' },
+  { year: '1991', value: 3 },
+  { year: '1992', value: 4 },
+  { year: '1993', value: 3.5 },
+  { year: '1994', value: 5 },
+  { year: '1995', value: 4.9 },
+  { year: '1996', value: 6 },
+  { year: '1997', value: 7 },
+  { year: '1998', value: 9 },
+  { year: '1999', value: 13 },
 ];
+const config = {
+  data,
+  height: 400,
+  xField: 'year',
+  yField: 'value',
+  point: {
+    size: 5,
+    shape: 'diamond',
+  },
+};
 
 const CodePreview: React.FC = ({ children }) => (
   <pre className={styles.pre}>
@@ -28,9 +51,10 @@ const Welcome: React.FC = () => {
   return (
     <PageContainer>
       <Card>
-        <Chart data={data} width={500} autoFit>
+        <Line {...config} />
+        {/* <Chart data={data} width={500} autoFit>
           <Line position="x*y" color="type" />
-        </Chart>
+        </Chart> */}
         <Alert
           message={intl.formatMessage({
             id: 'pages.welcome.alertMessage',
