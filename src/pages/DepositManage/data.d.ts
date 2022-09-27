@@ -1,16 +1,8 @@
 export type TableListItem = {
-  key: number;
-  disabled?: boolean;
-  href: string;
-  avatar: string;
-  name: string;
-  owner: string;
-  desc: string;
-  callNo: number;
-  status: string;
-  updatedAt: Date;
-  createdAt: Date;
-  progress: number;
+  id: number;
+  date: string;
+  total: number;
+  params: string;
 };
 
 export type TableListPagination = {
@@ -33,4 +25,18 @@ export type TableListParams = {
   currentPage?: number;
   filter?: Record<string, any[]>;
   sorter?: Record<string, any>;
+};
+
+export interface TableFormDateType {
+  key: string;
+  name: string;
+  amount: number;
+  isNew?: boolean;
+  editable?: boolean;
+}
+
+export type FormValueType = {
+  date: string;
+  total: number;
+  wallets: TableFormDateType[];
 };

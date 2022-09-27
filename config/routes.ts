@@ -20,16 +20,10 @@ export default [
     component: './Welcome',
   },
   {
-    name: '资产储蓄',
+    name: 'deposit',
     icon: 'smile',
     path: '/depositmanage',
     component: './DepositManage',
-  },
-  {
-    path: '/deposit',
-    name: 'deposit',
-    icon: 'smile',
-    component: './deposit',
   },
   {
     path: '/admin',

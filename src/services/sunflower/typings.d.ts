@@ -1,7 +1,7 @@
 declare namespace API {
   type CreateDepositDto = {
-    /** 资产详情 */
-    params: string;
+    /** 钱包详情 */
+    wallets: string;
     /** 总资产 */
     total: number;
     /** 记录时间 */
@@ -9,6 +9,11 @@ declare namespace API {
   };
 
   type CreateMemberDto = {};
+
+  type DeleteDepositDto = {
+    /** 主键 */
+    id: number;
+  };
 
   type DepositControllerFindOneParams = {
     id: string;
@@ -27,8 +32,8 @@ declare namespace API {
   };
 
   type UpdateDepositDto = {
-    /** 资产详情 */
-    params?: string;
+    /** 钱包详情 */
+    wallets?: string;
     /** 总资产 */
     total?: number;
     /** 记录时间 */

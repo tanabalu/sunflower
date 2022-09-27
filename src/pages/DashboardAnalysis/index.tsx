@@ -6,19 +6,20 @@ import { Col, Dropdown, Menu, Row } from 'antd';
 import { GridContent } from '@ant-design/pro-layout';
 import type { RadioChangeEvent } from 'antd/es/radio';
 import type { RangePickerProps } from 'antd/es/date-picker/generatePicker';
-import type moment from 'moment';
+import moment from 'moment';
 import IntroduceRow from './components/IntroduceRow';
 import DepositCard from './components/DepositCard';
 // import SalesCard from './components/SalesCard';
 import TopSearch from './components/TopSearch';
 import ProportionSales from './components/ProportionSales';
 import OfflineData from './components/OfflineData';
-import { fakeChartData, fetchDepositData } from './service';
+import { fakeChartData } from './service';
 import PageLoading from './components/PageLoading';
 import type { TimeType } from './components/SalesCard';
 import { getTimeDistance } from './utils/utils';
 import type { AnalysisData } from './data.d';
 import styles from './style.less';
+import { DepositControllerFindAllAsc } from '@/services/sunflower/deposit';
 
 type RangePickerValue = RangePickerProps<moment.Moment>['value'];
 
@@ -38,10 +39,14 @@ const DashboardAnalysis: FC<DashboardAnalysisProps> = () => {
   const [depositData, setDepositData] = useState();
 
   const { loading, data } = useRequest(fakeChartData);
-  const { run: depositRun } = useRequest(fetchDepositData, {
+  const { run: depositRun } = useRequest(DepositControllerFindAllAsc, {
     manual: true,
-    onSuccess: (result, params) => {
-      console.log(result, params);
+    onSuccess: (res, params) => {
+      console.log('res', res, params);
+      const result = res.map((item) => ({
+        ...item,
+        date: moment(item.date).format('YYYY年MM月'),
+      }));
       setDepositData(result);
     },
   });
