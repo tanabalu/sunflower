@@ -40,10 +40,9 @@ const DepositEdit: React.FC<DepositEditProps> = ({
           },
           {
             validator: (rule, value, callback) => {
-              console.log(rule, value, callback);
-              console.log(formRef.current?.getFieldValue('wallets'));
+              const currentKey = rule.field.split('.')[0];
               const wallets: TableFormDateType[] = formRef.current?.getFieldValue('wallets') || [];
-              const wallet = wallets.find((item) => item.name === value);
+              const wallet = wallets.find((item) => item.name === value && item.key !== currentKey);
               if (wallet) {
                 callback('请不要重复选择同一个钱包');
               } else {
@@ -162,16 +161,6 @@ const DepositEdit: React.FC<DepositEditProps> = ({
           }}
           columns={columns}
           rowKey="key"
-          // onChange={onChange}
-          editable={{
-            // type: 'multiple',
-            // editableKeys,
-            onSave: async (rowKey, data, row) => {
-              console.log(rowKey, data, row);
-              // await waitTime(2000);
-            },
-            // onChange: setEditableRowKeys,
-          }}
         />
       </ProForm.Item>
     </ModalForm>
