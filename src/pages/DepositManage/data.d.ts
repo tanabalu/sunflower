@@ -2,7 +2,7 @@ export type TableListItem = {
   id: number;
   date: string;
   total: number;
-  params: string;
+  wallets: string;
 };
 
 export type TableListPagination = {
