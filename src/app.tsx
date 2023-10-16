@@ -31,7 +31,8 @@ export async function getInitialState(): Promise<{
       const msg = await queryCurrentUser();
       return msg.data;
     } catch (error) {
-      history.push(loginPath);
+      // TODO: 恢复：如果用户没有登录，则跳转至登录页
+      // history.push(loginPath);
     }
     return undefined;
   };
@@ -63,7 +64,8 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
       const { location } = history;
       // 如果没有登录，重定向到 login
       if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
+        // TODO: 恢复：如果用户没有登录，则跳转至登录页
+        // history.push(loginPath);
       }
     },
     links: isDev

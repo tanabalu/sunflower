@@ -1,9 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ProForm, {
   ModalForm,
   ProFormDatePicker,
   ProFormDependency,
   ProFormDigit,
+  // ProFormMoney,
 } from '@ant-design/pro-form';
 import type { ProFormInstance } from '@ant-design/pro-form';
 import { EditableProTable } from '@ant-design/pro-table';
@@ -11,6 +12,8 @@ import type { ProColumnType } from '@ant-design/pro-table';
 import moment from 'moment';
 import Decimal from 'decimal.js';
 import type { FormValueType, TableFormDateType, TableListItem } from '../data';
+import styles from './index.less';
+import { InputNumber } from 'antd';
 
 const valueEnum = {
   0: {
@@ -40,6 +43,12 @@ const valueEnum = {
   8: {
     text: '平安信用卡',
   },
+  10: {
+    text: '平安证券',
+  },
+  9: {
+    text: '广发信用卡',
+  },
   97: {
     text: '花呗',
   },
@@ -51,7 +60,7 @@ const valueEnum = {
   },
 };
 
-const defaultWallets = ['0', '1', '2', '3', '4', '5', '6', '7', '8'].map((key) => ({
+const defaultWallets = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10'].map((key) => ({
   key,
   name: key,
   amount: 0,
@@ -65,19 +74,30 @@ export type DepositEditProps = {
 };
 
 const DepositEdit: React.FC<DepositEditProps> = ({
-  values = {},
+  values,
   visible,
   onVisibleChange,
   onFinish,
 }) => {
+  const [editableKeys, setEditableKeys] = useState([]);
   const formRef = useRef<ProFormInstance>();
+  // const values = propsValues || {};
+  // const wallets = values?.wallets ? JSON.parse(values?.wallets) : defaultWallets;
+
+  useEffect(() => {
+    // if (Object.prototype.hasOwnProperty.call(values)) {
+
+    // }
+    const wallets = values?.wallets ? JSON.parse(values?.wallets) : defaultWallets;
+    setEditableKeys((wallets || []).map((item) => item.key));
+  }, [values]);
 
   const columns: ProColumnType<TableFormDateType>[] = [
     {
       title: '钱包',
       dataIndex: 'name',
       key: 'name',
-      width: '40%',
+      width: '30%',
       formItemProps: {
         rules: [
           {
@@ -104,15 +124,40 @@ const DepositEdit: React.FC<DepositEditProps> = ({
       title: '金额',
       dataIndex: 'amount',
       key: 'amount',
-      width: '20%',
+      width: '30%',
       valueType: 'money',
+      // style: {
+
+      // },
+      className: styles.width,
       formItemProps: {
+        className: styles.width,
+        style: {
+          width: '100%',
+        },
         rules: [
           {
             required: true,
             message: '此项为必填项',
           },
         ],
+      },
+      renderFormItem() {
+        return (
+          <InputNumber prefix="￥" style={{ width: '100%' }} />
+          // <ProFormMoney
+          //   label=" "
+          //   name="amount"
+          //   // initialValue={22.22}
+          //   customSymbol="￥"
+          //   rules={[
+          //     {
+          //       required: true,
+          //       message: '此项为必填项',
+          //     }
+          //   ]}
+          // />
+        );
       },
     },
     {
@@ -181,6 +226,9 @@ const DepositEdit: React.FC<DepositEditProps> = ({
                 key: `0${Date.now()}`,
               };
             },
+          }}
+          editable={{
+            editableKeys,
           }}
           columns={columns}
           rowKey="key"
